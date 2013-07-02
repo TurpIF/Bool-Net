@@ -1,0 +1,17 @@
+TNF is not activated ; FAS is not activated
+wild type,0,0,0,100
+anti oxidant,0,0,0,100
+APAF1 deletion,0,0,0,100
+BAX deleteion,0,0,0,100
+BCL2 over expression,0,0,0,100
+CASP8 deleteion,0,0,0,100
+constituvely activated CASP8,100,0,0,0
+cFlip deletion,100,0,0,0
+cIAP deletion,0,0,0,100
+FADD deletion,0,0,0,100
+NFkB deletion,0,0,0,100
+constituvely activated NFkB,0,0,100,0
+RIP1 deletion,0,0,0,100
+XIAP deletion,0,0,0,100
+z VAD,0,0,0,100
+z VAD et RIP1 deletion,0,0,0,100

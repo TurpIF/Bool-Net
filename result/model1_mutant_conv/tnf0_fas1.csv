@@ -1,0 +1,16 @@
+wild type,60,8,29,0
+anti oxidant,60,10,29,0
+APAF1 deletion,0,9,29,61
+BAX deletion,0,7,30,61
+BCL2 over expression,0,8,31,60
+CASP8 deletion,0,13,85,1
+constitutively activated CASP8,88,9,0,2
+cFLIP deletetion,87,9,0,2
+cIAP deletetion,68,30,0,0
+FADD deletetion,0,13,85,1
+NFkB deletetion,69,30,0,0
+constitutively activated NFkB,0,0,99,0
+RIP1 deletetion,99,0,0,0
+XIAP deletetion,61,9,28,0
+z VAD,0,9,30,60
+z VAD et RIP1 deletion,0,0,0,100
