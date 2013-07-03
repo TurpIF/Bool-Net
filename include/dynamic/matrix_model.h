@@ -166,7 +166,8 @@ namespace dynamic
                 while(nbr_modif > 0)
                 {
                     // Pick one modification randomly
-                    std::size_t picked = std::rand() % size_modified - (min - nbr_modif);
+                    std::size_t picked = std::rand() % (size_modified - (min - nbr_modif));
+
                     abstract_model<Size>::_state.set(list_modified[picked],
                             s.test(list_modified[picked]));
 
