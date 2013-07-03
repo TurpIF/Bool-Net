@@ -12,6 +12,7 @@ set(TESTS
     "converge_fadd"
     "decision_fadd"
     "decision_gata1"
+    "matrix_model"
     )
 
 # Add all defined tests

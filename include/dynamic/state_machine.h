@@ -105,7 +105,7 @@ namespace dynamic
                  * A model can specify the time it can be static without deduce there
                  * is a convergence or a loop.
                  */
-                void step(std::time_t time)
+                void step(std::time_t time = 1)
                 {
                     if(time <= 0)
                         return;

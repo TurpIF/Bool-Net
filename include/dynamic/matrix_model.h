@@ -91,9 +91,18 @@ namespace dynamic
                 abstract_model<Size>(s),
                 _matrix(),
                 _nbr_updated_node(nbr_updated_node)
-        {
-            std::copy(m, m + (size + 1) * size, _matrix);
-        }
+            {
+                std::copy(m, m + (size + 1) * size, _matrix);
+            }
+
+            /*!
+             * \brief Return the amount of time a machine can stay static before looping.
+             * \return Minimum time the network has to stay static.
+             */
+            virtual std::time_t get_min_time() const
+            {
+                return 1;
+            }
 
             /*!
              * \brief Update the model once.
