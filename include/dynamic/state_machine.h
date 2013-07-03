@@ -12,6 +12,8 @@
 #include <cstddef>
 #include <ctime>
 
+#include <iostream>
+
 namespace dynamic
 {
     /*!
@@ -68,7 +70,8 @@ namespace dynamic
                     _model(m),
                     _history(),
                     _in_cycle(false),
-                    _begin_cycle(_history.begin()),
+                    _begin_cycle(0),
+                    _end_cycle(0),
                     _time(0),
                     _time_stase(0)
             {
@@ -114,11 +117,24 @@ namespace dynamic
                     {
                         // In case of loop, jumps directly to the final state
                         _time += time;
-                        std::ptrdiff_t d = std::distance(_begin_cycle, _history.end());
-                        if(d == 0)
-                            _model.set_state(*_begin_cycle);
-                        else
-                            _model.set_state(*(_begin_cycle + _time % d));
+                        std::ptrdiff_t d = (_history.size() - _model.get_min_time()) - _begin_cycle;
+                        std::cout << "time : " << _time
+                            << "dist : " << d
+                            << "modulo : " << ((_time + 1) % d)
+                            << std::endl;
+
+                        std::cout << "history : ";
+                        for(typename history_type::const_iterator it = _history.begin() ;
+                                it != _history.end() ; it++)
+                            std::cout << it->to_ulong() << " ";
+                        std::cout << std::endl;
+                        std::cout << "loop : ";
+#error TO FIX
+                        for(typename history_type::const_iterator it = _history.begin() + _begin_cycle ;
+                                it != _history.end() - _model.get_min_time() ; it++)
+                            std::cout << it->to_ulong() << " ";
+                        std::cout << std::endl;
+                        _model.set_state(_history[_begin_cycle + (_time + 1) % d]);
                     }
                     else
                     {
@@ -146,8 +162,11 @@ namespace dynamic
                     if(it != _history.end())
                     {
                         // If true, increments the stase time of the machine
+                        if(_time_stase == 0)
+                            _end_cycle = _history.size();
                         _time_stase++;
-                        _begin_cycle = it;
+                        _begin_cycle = std::distance(_history.begin(), it);
+                        _history.push_back(_model.get_state());
                     }
                     else
                     {
@@ -189,7 +208,14 @@ namespace dynamic
                  * \brief The begin of the loop of the machine
                  * \warning If the machine is not in loop, the value may be invalid
                  */
-                typename history_type::iterator _begin_cycle;
+                std::size_t _begin_cycle;
+
+                /*!
+                 * \var _end_cycle
+                 * \brief The end of the loop of the machine
+                 * \warning If the machine is not in loop, the value may be invalid
+                 */
+                std::size_t _end_cycle;
 
                 /*!
                  * \var _time

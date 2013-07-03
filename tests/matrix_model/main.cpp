@@ -16,7 +16,7 @@ void test(Model const & model, typename Model::state_type const & init, unsigned
     dynamic::state_machine<Model> machine(model);
     machine.get_model().set_state(init);
     machine.step(nbr_step);
-    std::cout << num << " : " << init << " => " << machine.get_model().get_state().to_ulong() << std::endl;
+    std::cout << num << " : " << init << " => " << machine.get_model().get_state() << std::endl;
     assert(machine.get_model().get_state().to_ulong() == val_expected);
 }
 
@@ -192,7 +192,7 @@ int main()
 
         test(model, 0, 0);
         test(model, 1, 2, 2 * N + 1); // To be sure, the number of step is odd
-        test(model, 2, 1, 2 * N); // To be sure, the number of step is even
+        test(model, 2, 1, 2 * N + 1); // To be sure, the number of step is even
         test(model, 3, 3);
     }
 
