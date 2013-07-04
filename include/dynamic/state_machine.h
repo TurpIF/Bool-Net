@@ -12,8 +12,6 @@
 #include <cstddef>
 #include <ctime>
 
-#include <iostream>
-
 namespace dynamic
 {
     /*!
@@ -117,7 +115,7 @@ namespace dynamic
                         // In case of loop, jumps directly to the final state
                         _time += time;
                         std::ptrdiff_t d = (_history.size() - _model.get_min_time() - 1) - _begin_cycle;
-                        _model.set_state(_history[_begin_cycle + (_time + 1) % d]);
+                        _model.set_state(_history[_begin_cycle + (_time - _begin_cycle) % d]);
                     }
                     else
                     {

@@ -202,6 +202,34 @@ int main()
         test(model, 2, 2, 2 * N); // To be sure, the number of step is even
         test(model, 3, 3);
     }
+    {
+        // Model with 4 nodes and a cycling model
+        dynamic::matrix_model<4> model({
+                0.0, -1,  1,  0,  0,
+                0.0,  0, -1,  1,  0,
+                0.0,  0,  0, -1,  1,
+                0.0,  1,  0,  0, -1}, 4);
+        dynamic::state_machine<dynamic::matrix_model<4> > machine(model);
+
+        test(model, 0, 0);
+        test(model, 1, 1, 4 * N); // Number of step = 0 modulo 4
+        test(model, 2, 2, 4 * N); // Number of step = 0 modulo 4
+        test(model, 4, 4, 4 * N); // Number of step = 0 modulo 4
+        test(model, 8, 8, 4 * N); // Number of step = 0 modulo 4
+        test(model, 1, 8, 4 * N + 1); // Number of step = 1 modulo 4
+        test(model, 2, 1, 4 * N + 1); // Number of step = 1 modulo 4
+        test(model, 4, 2, 4 * N + 1); // Number of step = 1 modulo 4
+        test(model, 8, 4, 4 * N + 1); // Number of step = 1 modulo 4
+        test(model, 1, 4, 4 * N + 2); // Number of step = 2 modulo 4
+        test(model, 2, 8, 4 * N + 2); // Number of step = 2 modulo 4
+        test(model, 4, 1, 4 * N + 2); // Number of step = 2 modulo 4
+        test(model, 8, 2, 4 * N + 2); // Number of step = 2 modulo 4
+        test(model, 1, 2, 4 * N + 3); // Number of step = 3 modulo 4
+        test(model, 2, 4, 4 * N + 3); // Number of step = 3 modulo 4
+        test(model, 4, 8, 4 * N + 3); // Number of step = 3 modulo 4
+        test(model, 8, 1, 4 * N + 3); // Number of step = 3 modulo 4
+        test(model, 15, 15);
+    }
 
     return 0;
 }
