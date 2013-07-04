@@ -65,22 +65,6 @@ namespace dynamic
         bool reset_time;
     };
 
-    /*!
-     * \class matrix_model<Size, timed_coef>
-     * \tparam Size The size of the boolean network
-     * \brief Timed model of a boolean network
-     *
-     * The transition rules are stored in a matrix like
-     * a Markov chain.
-     * A node can be connected to another node is a coefficient.
-     * If one node is updated, we do the sum of all
-     * coefficients of the active node connected to it.
-     * If the sum is greater than 0, the node is activated,
-     * if it's lower, it is deactivated and if it's null,
-     * the node doesn't change.
-     * A node is acting for another only if the time in the case
-     * of the matrix is greater that the time minimum.
-     */
     template <std::size_t Size>
         class matrix_model<Size, timed_coef> : public abstract_model<Size>
         {
@@ -294,6 +278,36 @@ namespace dynamic
                  */
                 std::size_t _nbr_updated_node;
         };
+
+
+    /*!
+     * \struct timed_matrix_model
+     * \tparam Size The size of the boolean network
+     * \brief Timed model of a boolean network
+     *
+     * The transition rules are stored in a matrix like
+     * a Markov chain.
+     * A node can be connected to another node is a coefficient.
+     * If one node is updated, we do the sum of all
+     * coefficients of the active node connected to it.
+     * If the sum is greater than 0, the node is activated,
+     * if it's lower, it is deactivated and if it's null,
+     * the node doesn't change.
+     * A node is acting for another only if the time in the case
+     * of the matrix is greater that the time minimum.
+     */
+    template <std::size_t Size>
+    struct timed_matrix_model
+    {
+        /*!
+         * \typedef type
+         * \brief Shortcut for hide the struct timed_coef
+         *
+         * It's the type of a matrix_model class using the structure
+         * timed_coef as coefficient of the matrix
+         */
+        typedef matrix_model<Size, timed_coef> type;
+    };
 }
 
 #endif

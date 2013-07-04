@@ -12,6 +12,8 @@
 #include <cstddef>
 #include <ctime>
 
+#include <iostream>
+
 namespace dynamic
 {
     /*!
@@ -69,11 +71,10 @@ namespace dynamic
                     _history(),
                     _in_cycle(false),
                     _begin_cycle(0),
-                    _time(0),
-                    _time_stase(0)
+                    _time(0)
             {
                 // Store the current state in the history
-                _history.push_back(_model.get_state());
+                //_history.push_back(_model.get_state());
             }
 
                 /*!
@@ -113,6 +114,16 @@ namespace dynamic
                     if(_in_cycle)
                     {
                         // In case of loop, jumps directly to the final state
+                        std::cout << "loop : ";
+                        for(std::size_t i = _begin_cycle ; i < _history.size() - _model.get_min_time() - 1 ; i++)
+                            std::cout << _history[i] << " ";
+                        std::cout << std::endl;
+
+                        std::cout << "history : ";
+                        for(std::size_t i = 0 ; i < _history.size() ; i++)
+                            std::cout << _history[i] << " ";
+                        std::cout << std::endl;
+
                         _time += time;
                         std::ptrdiff_t d = (_history.size() - _model.get_min_time() - 1) - _begin_cycle;
                         _model.set_state(_history[_begin_cycle + (_time - _begin_cycle) % d]);
@@ -139,27 +150,43 @@ namespace dynamic
                     _model.step();
 
                     // Try to find if the current state was already visited
-                    typename history_type::iterator it = std::find(_history.begin(), _history.end(), _model.get_state());
-                    if(it != _history.end())
+                    if(_history.size() > static_cast<typename history_type::size_type>(_model.get_min_time()))
                     {
-                        // If true, increments the stase time of the machine
-                        if(_time_stase == 0)
+                        typename history_type::iterator end = _history.end() - _model.get_min_time() - 1;
+                        typename history_type::iterator it;
+                        it = std::search(_history.begin(), end, end, _history.end());
+                        std::cout << "search ";
+                        for(typename history_type::iterator i = end ; i != _history.end() ; i++)
+                            std::cout << *i << " ";
+                        std::cout << "in ";
+                        for(typename history_type::iterator i = _history.begin() ; i != end ; i++)
+                            std::cout << *i << " ";
+                        std::cout << std::endl;
+                        if(it != end)
+                        {
+                            std::cout << "find" << std::endl;
                             _begin_cycle = std::distance(_history.begin(), it);
-                        _time_stase++;
+                            _in_cycle = true;
+                        }
                     }
-                    else
+
+                    if(!_in_cycle)
                     {
-                        // If false, reinits all the variables about the stase of the machine
-                        _time_stase = 0;
-                        _in_cycle = false;
+                    _history.push_back(_model.get_state());
+                    std::cout << _model.get_state() << std::endl;
                     }
 
-                    _history.push_back(_model.get_state());
+                    //typename history_type::iterator it = _history.end();
+                    //if(_time >= _model.get_min_time())
 
-                    // Detects if the machine is in stase since so many time
-                    // that the machine is now considered as static or in loop.
-                    if(_time_stase > _model.get_min_time())
-                        _in_cycle = true;
+                    //std::cout << std::distance(it, _history.end() - _model.get_min_time()) << std::endl;
+
+                    //if(it != _history.end() && it != (_history.end() - _model.get_min_time() - 1))
+                    //{
+                    //    // If true, the machine is in  a loop
+                    //    _begin_cycle = std::distance(_history.begin(), it);
+                    //    _in_cycle = true;
+                    //}
 
                     _time += 1;
                 }
@@ -195,12 +222,6 @@ namespace dynamic
                  * \brief Local time of the machine
                  */
                 std::time_t _time;
-
-                /*!
-                 * \var _time_stase
-                 * \brief Amount of time the machine is in stase.
-                 */
-                std::time_t _time_stase;
         };
 }
 
