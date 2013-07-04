@@ -184,7 +184,12 @@ int main()
         test(model, 3, 2);
     }
     {
-        // Model with 2 nodes
+        // Model with 2 nodes and a cycling model
+        // The two nodes have a positive effect on each other
+        // and a negative effect on themself. So the system blink.
+        // For an odd number of step, with 10 or 01, the system is the
+        // opposite (01 and 10). Else it's the same position.
+        // If the state is 11, the system is at equilibrium.
         dynamic::matrix_model<2> model({
                 0.0, -1,  1,
                 0.0,  1, -1}, 2);
@@ -192,7 +197,9 @@ int main()
 
         test(model, 0, 0);
         test(model, 1, 2, 2 * N + 1); // To be sure, the number of step is odd
-        test(model, 2, 1, 2 * N + 1); // To be sure, the number of step is even
+        test(model, 2, 1, 2 * N + 1); // To be sure, the number of step is odd
+        test(model, 1, 1, 2 * N); // To be sure, the number of step is even
+        test(model, 2, 2, 2 * N); // To be sure, the number of step is even
         test(model, 3, 3);
     }
 

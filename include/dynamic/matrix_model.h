@@ -101,7 +101,7 @@ namespace dynamic
              */
             virtual std::time_t get_min_time() const
             {
-                return 2;
+                return 0;
             }
 
             /*!
