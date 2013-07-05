@@ -126,7 +126,7 @@ namespace dynamic
 
                         _time += time;
                         std::ptrdiff_t d = (_history.size() - _model.get_min_time() - 1) - _begin_cycle;
-                        _model.set_state(_history[_begin_cycle + (_time - _begin_cycle) % d]);
+                        _model.set_state(_history[_begin_cycle + (_time - _begin_cycle - 1) % d]);
                     }
                     else
                     {
@@ -155,16 +155,16 @@ namespace dynamic
                         typename history_type::iterator end = _history.end() - _model.get_min_time() - 1;
                         typename history_type::iterator it;
                         it = std::search(_history.begin(), end, end, _history.end());
-                        std::cout << "search ";
-                        for(typename history_type::iterator i = end ; i != _history.end() ; i++)
-                            std::cout << *i << " ";
-                        std::cout << "in ";
-                        for(typename history_type::iterator i = _history.begin() ; i != end ; i++)
-                            std::cout << *i << " ";
-                        std::cout << std::endl;
+                        //std::cout << "search ";
+                        //for(typename history_type::iterator i = end ; i != _history.end() ; i++)
+                        //    std::cout << *i << " ";
+                        //std::cout << "in ";
+                        //for(typename history_type::iterator i = _history.begin() ; i != end ; i++)
+                        //    std::cout << *i << " ";
+                        //std::cout << std::endl;
                         if(it != end)
                         {
-                            std::cout << "find" << std::endl;
+                            //std::cout << "find" << std::endl;
                             _begin_cycle = std::distance(_history.begin(), it);
                             _in_cycle = true;
                         }
@@ -172,8 +172,7 @@ namespace dynamic
 
                     if(!_in_cycle)
                     {
-                    _history.push_back(_model.get_state());
-                    std::cout << _model.get_state() << std::endl;
+                        _history.push_back(_model.get_state());
                     }
 
                     //typename history_type::iterator it = _history.end();
