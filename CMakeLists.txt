@@ -39,12 +39,15 @@ add_custom_target(
     COMMAND ${CTAGS_CMD})
 
 # Doxygen target
-set(DOXYGEN_TARGET_NAME "doxygen")
-set(DOXYGEN_FILE "Doxyfile")
-set(DOXYGEN_CMD doxygen ${CMAKE_CURRENT_SOURCE_DIR}/${DOXYGEN_FILE})
-add_custom_target(
-    ${DOXYGEN_TARGET_NAME}
-    COMMAND ${DOXYGEN_CMD})
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+add_custom_target(doc
+${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+COMMENT "Generating API documentation with Doxygen" VERBATIM
+)
+endif(DOXYGEN_FOUND)
 
 # Tests
 add_subdirectory("tests")

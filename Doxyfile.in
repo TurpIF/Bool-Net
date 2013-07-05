@@ -665,14 +665,8 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = /home/turpif/Projet/stage/include/dynamic \
-                         /home/turpif/Projet/stage/include/models \
-                         tests/converge_fadd/ \
-                         tests/converge_yeast/ \
-                         tests/decision_fadd/ \
-                         tests/decision_gata1/ \
-                         /home/turpif/Projet/stage/include/tests \
-                         /home/turpif/Projet/stage/include/simulation
+INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/include \
+                         @CMAKE_CURRENT_SOURCE_DIR@/tests
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 
