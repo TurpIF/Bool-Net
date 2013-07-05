@@ -38,5 +38,13 @@ add_custom_target(
     ${CTAGS_TARGET_NAME}
     COMMAND ${CTAGS_CMD})
 
+# Doxygen target
+set(DOXYGEN_TARGET_NAME "doxygen")
+set(DOXYGEN_FILE "Doxyfile")
+set(DOXYGEN_CMD doxygen ${CMAKE_CURRENT_SOURCE_DIR}/${DOXYGEN_FILE})
+add_custom_target(
+    ${DOXYGEN_TARGET_NAME}
+    COMMAND ${DOXYGEN_CMD})
+
 # Tests
 add_subdirectory("tests")
