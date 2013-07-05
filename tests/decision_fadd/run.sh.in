@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+pwd
+echo @CMAKE_CURRENT_BINARY_DIR@
+echo @CMAKE_CURRENT_SOURCE_DIR@
