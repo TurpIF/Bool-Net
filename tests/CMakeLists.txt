@@ -16,6 +16,12 @@ set(TESTS
     "timed_matrix_model"
     )
 
+find_package(PythonInterp 2 QUIET)
+if(${PYTHONINTERP_FOUND})
+else()
+    message(WARNING "Python not found. Impossible to add the run targets")
+endif()
+
 # Add all defined tests
 foreach(e ${TESTS})
     if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${e}")
@@ -29,17 +35,22 @@ foreach(e ${TESTS})
         set(run_file_dir "${CMAKE_CURRENT_SOURCE_DIR}/${e}")
         set(run_file "run.sh")
         set(run_file_in  "${run_file}.in")
-        if(EXISTS "${run_file_dir}/${run_file_in}")
+        if(${PYTHONINTERP_FOUND} AND EXISTS "${run_file_dir}/${run_file_in}")
             set(run_name "test.${e}.run")
-            set(run_path "${CMAKE_CURRENT_BINARY_DIR}/${e}")
+            set(run_path "${CMAKE_CURRENT_BINARY_DIR}/${e}.run")
 
             message(STATUS "Adding the run target ${run_name}")
+
+            set(SRC_DIR "${run_file_dir}")
+            set(BIN_DIR "${CMAKE_CURRENT_BINARY_DIR}")
+            set(EXE "${e_exe_name}")
+
             configure_file(${run_file_dir}/${run_file_in} ${run_path}/${run_file})
 
             add_custom_target(${run_name}
                 COMMAND sh ${run_path}/${run_file}
                 WORKING_DIRECTORY ${run_path}
-                COMMENT "Executing the running script of the test ${e}" VERBATIM
+                COMMENT "Executing the script of the test ${e}" VERBATIM
                 DEPENDS ${e_exe_name}
             )
         endif()

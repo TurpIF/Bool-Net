@@ -1,5 +1,5 @@
 # minimum version of CMake needed (used version).
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.9)
 
 # Our project name: CellBool
 project(CellBool)

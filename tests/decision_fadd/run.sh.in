@@ -1,5 +1,34 @@
 #!/usr/bin/env bash
 
-pwd
-echo @CMAKE_CURRENT_BINARY_DIR@
-echo @CMAKE_CURRENT_SOURCE_DIR@
+python="@PYTHON_EXECUTABLE@"
+src="@SRC_DIR@"
+bin="@BIN_DIR@"
+exe="@EXE@"
+
+prog_cpp="$bin/$exe"
+prog_python="$python $src/data2graph.py"
+
+echo "TNF off, FAS off..."
+$prog_cpp | $prog_python ./tnf0_fas0 &
+pid1=$!
+
+echo "TNF on, FAS off..."
+$prog_cpp tnf | $prog_python ./tnf1_fas0 &
+pid2=$!
+
+echo "TNF off, FAS on..."
+$prog_cpp fas | $prog_python ./tnf0_fas1 &
+pid3=$!
+
+echo "TNF on, FAS on..."
+$prog_cpp tnf fas | $prog_python ./tnf1_fas1 &
+pid4=$!
+
+wait $pid1
+echo "TNF off, FAS off finished"
+wait $pid2
+echo "TNF on, FAS off finished"
+wait $pid3
+echo "TNF off, FAS on finished"
+wait $pid4
+echo "TNF on, FAS on finished"
