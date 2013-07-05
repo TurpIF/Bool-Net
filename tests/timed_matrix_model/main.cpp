@@ -1,15 +1,14 @@
-#include <cstdlib>
-#include <iostream>
-
 #define SHOW_SUCCESS
 //#undef SHOW_SUCCESS
 
+#include <cstdlib>
+#include <iostream>
 
 #include "dynamic/timed_matrix_model.h"
 #include "dynamic/state_machine.h"
 
 static const std::size_t N = 1000;
-static const std::size_t T = 3;
+static const std::size_t T = 100;
 static std::size_t num_test = 0;
 
 template<typename Model>

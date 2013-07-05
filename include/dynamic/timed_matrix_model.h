@@ -241,6 +241,8 @@ namespace dynamic
                                     >= _matrix[n * (size + 1) + i + 1].time_min)
                             {
                                 sum += _matrix[n * (size + 1) + i + 1].coef;
+                                if(_matrix[n * (size + 1) + i + 1].reset_time)
+                                    _matrix[n * (size + 1) + i + 1].time = 0;
                             }
                         }
                     }
