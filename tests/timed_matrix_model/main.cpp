@@ -4,8 +4,8 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "dynamic/timed_matrix_model.h"
-#include "dynamic/state_machine.h"
+#include <bool_network/dynamic/timed_matrix_model.h>
+#include <bool_network/dynamic/state_machine.h>
 
 static const std::size_t N = 1000;
 static const std::size_t T = 100;
@@ -21,7 +21,7 @@ void test(Model const & model,
 {
     num_test++;
 
-    dynamic::state_machine<Model> machine(model);
+    bn::dynamic::state_machine<Model> machine(model);
     machine.get_model().set_state(init);
     machine.step(nbr_step);
 
@@ -50,13 +50,13 @@ void test(Model const & model,
 
 int main()
 {
-    typedef dynamic::timed_coef tc;
+    typedef bn::dynamic::timed_coef tc;
 
     // Basic tests without time effect
     {
         // Simple case with only one node interacting with himself
         // The node have to stay to the same position
-        dynamic::timed_matrix_model<1>::type model({0.0, 0}, 1);
+        bn::dynamic::timed_matrix_model<1>::type model({0.0, 0}, 1);
 
         // The node is initialized to 0 and could stay to 0
         TEST(model, 0, 0);
@@ -67,7 +67,7 @@ int main()
     {
         // Simple case with only one node interacting with himself
         // The node have to turn off
-        dynamic::timed_matrix_model<1>::type model({1.0, 0}, 1);
+        bn::dynamic::timed_matrix_model<1>::type model({1.0, 0}, 1);
 
         // The node is initialized to 0 and could stay to 0
         TEST(model, 0, 0);
@@ -78,7 +78,7 @@ int main()
     {
         // Simple case with only one node interacting with himself
         // The node have to turn on
-        dynamic::timed_matrix_model<1>::type model({-1.0, 0}, 1);
+        bn::dynamic::timed_matrix_model<1>::type model({-1.0, 0}, 1);
 
         // The node is initialized to 0 and have to turn on
         TEST(model, 0, 1);
@@ -90,7 +90,7 @@ int main()
         // Simple case with only one node interacting with himself
         // The node have to stay to the same position
         // The node give an positive effect on himself only if he is activate
-        dynamic::timed_matrix_model<1>::type model({0.0, 1}, 1);
+        bn::dynamic::timed_matrix_model<1>::type model({0.0, 1}, 1);
 
         // The node is initialized to 0 and have to stay off
         TEST(model, 0, 0);
@@ -102,7 +102,7 @@ int main()
         // Simple case with only one node interacting with himself
         // The node have to turn off
         // Once the node is activated, he give to himself a negative effect.
-        dynamic::timed_matrix_model<1>::type model({0.0, -1}, 1);
+        bn::dynamic::timed_matrix_model<1>::type model({0.0, -1}, 1);
 
         // The node is initialized to 0 and have to stay off
         TEST(model, 0, 0);
@@ -113,7 +113,7 @@ int main()
     {
         // Same case than before but with 2 nodes
         // They doesn't have to change
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0, 0, 0,
                 0.0, 0, 0}, 2);
 
@@ -124,7 +124,7 @@ int main()
     {
         // Model with 2 nodes
         // Nodes have to became off
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 1.0, 0, 0,
                 1.0, 0, 0}, 2);
 
@@ -135,7 +135,7 @@ int main()
     {
         // Model with 2 nodes
         // Nodes have to became on
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 -1.0, 0, 0,
                 -1.0, 0, 0}, 2);
 
@@ -146,7 +146,7 @@ int main()
     {
         // Model with 2 nodes
         // Nodes have to stay to the same pos
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0, 1, 0,
                 0.0, 0, 1}, 2);
 
@@ -157,7 +157,7 @@ int main()
     {
         // Model with 2 nodes
         // Nodes have to stay to turn off
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0, -1,  0,
                 0.0,  0, -1}, 2);
 
@@ -170,7 +170,7 @@ int main()
         // Each node interact positively with the other
         // If one node is on, the second turn on. If no-one is on,
         // the system stay off
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0,  0,  1,
                 0.0,  1,  0}, 2);
 
@@ -185,7 +185,7 @@ int main()
         // Model with 2 nodes
         // Each node interact negatively with the other
         // Only one can stay on. If both are on, they turn then off
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0,  0, -1,
                 0.0, -1,  0}, 2);
 
@@ -201,7 +201,7 @@ int main()
         // If both are off, the system stay off.
         // If the first is on, the second is turned on and turn the first off.
         // So in all other case the first is off and the second on
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0,  0, -1,
                 0.0,  1,  0}, 2);
 
@@ -217,7 +217,7 @@ int main()
         // For an odd number of step, with 10 or 01, the system is the
         // opposite (01 and 10). Else it's the same position.
         // If the state is 11, the system is at equilibrium.
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0, -1,  1,
                 0.0,  1, -1}, 2);
 
@@ -230,7 +230,7 @@ int main()
     }
     {
         // Model with 4 nodes and a cycling model
-        dynamic::timed_matrix_model<4>::type model({
+        bn::dynamic::timed_matrix_model<4>::type model({
                 0.0, -1,  1,  0,  0,
                 0.0,  0, -1,  1,  0,
                 0.0,  0,  0, -1,  1,
@@ -272,7 +272,7 @@ int main()
         // Simple case with only one node interacting with himself
         // The node have to stay to the same position
         // The node give an positive effect on himself only if he is activate
-        dynamic::timed_matrix_model<1>::type model({0.0, tc(1, T)}, 1);
+        bn::dynamic::timed_matrix_model<1>::type model({0.0, tc(1, T)}, 1);
 
         // The node is initialized to 0 and have to stay off
         TEST(model, 0, 0);
@@ -284,7 +284,7 @@ int main()
         // Simple case with only one node interacting with himself
         // The node have to turn off
         // Once the node is activated, he give to himself a negative effect.
-        dynamic::timed_matrix_model<1>::type model({0.0, tc(-1, T)}, 1);
+        bn::dynamic::timed_matrix_model<1>::type model({0.0, tc(-1, T)}, 1);
 
         // The node is initialized to 0 and have to stay off
         TEST(model, 0, 0);
@@ -295,7 +295,7 @@ int main()
     {
         // Model with 2 nodes
         // Nodes have to stay to the same pos
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0, tc(1, T), 0,
                 0.0, 0, tc(1, T)}, 2);
 
@@ -306,7 +306,7 @@ int main()
     {
         // Model with 2 nodes
         // Nodes have to stay to turn off
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0, tc(-1, T),  0,
                 0.0,  0, tc(-1, T)}, 2);
 
@@ -319,7 +319,7 @@ int main()
         // Each node interact positively with the other
         // If one node is on, the second turn on. If no-one is on,
         // the system stay off
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0,  0,  tc(1, T),
                 0.0,  tc(1, T),  0}, 2);
 
@@ -334,7 +334,7 @@ int main()
         // Model with 2 nodes
         // Each node interact negatively with the other
         // Only one can stay on. If both are on, they turn then off
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0,  0, tc(-1, T),
                 0.0, tc(-1, T),  0}, 2);
 
@@ -350,7 +350,7 @@ int main()
         // If both are off, the system stay off.
         // If the first is on, the second is turned on and turn the first off.
         // So in all other case the first is off and the second on
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0,  0, tc(-1, T),
                 0.0,  tc(1, T),  0}, 2);
 
@@ -366,7 +366,7 @@ int main()
         // For an odd number of step, with 10 or 01, the system is the
         // opposite (01 and 10). Else it's the same position.
         // If the state is 11, the system is at equilibrium.
-        dynamic::timed_matrix_model<2>::type model({
+        bn::dynamic::timed_matrix_model<2>::type model({
                 0.0, tc(-1, T),  tc(1, T),
                 0.0,  tc(1, T), tc(-1, T)}, 2);
 
@@ -382,7 +382,7 @@ int main()
     }
     {
         // Model with 4 nodes and a cycling model
-        dynamic::timed_matrix_model<4>::type model({
+        bn::dynamic::timed_matrix_model<4>::type model({
                 0.0, tc(-1, T),  tc(1, T),  0,  0,
                 0.0,  0, tc(-1, T),  tc(1, T),  0,
                 0.0,  0,  0, tc(-1, T),  tc(1, T),

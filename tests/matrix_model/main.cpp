@@ -4,9 +4,8 @@
 #define SHOW_SUCCESS
 //#undef SHOW_SUCCESS
 
-
-#include "dynamic/timed_matrix_model.h"
-#include "dynamic/state_machine.h"
+#include <bool_network/dynamic/timed_matrix_model.h>
+#include <bool_network/dynamic/state_machine.h>
 
 static const std::size_t N = 1000;
 static const std::size_t T = 15;
@@ -22,7 +21,7 @@ void test(Model const & model,
 {
     num_test++;
 
-    dynamic::state_machine<Model> machine(model);
+    bn::dynamic::state_machine<Model> machine(model);
     machine.get_model().set_state(init);
     machine.step(nbr_step);
 
@@ -54,7 +53,7 @@ int main()
     {
         // Simple case with only one node interacting with himself
         // The node have to stay to the same position
-        dynamic::matrix_model<1> model({0.0, 0}, 1);
+        bn::dynamic::matrix_model<1> model({0.0, 0}, 1);
 
         // The node is initialized to 0 and could stay to 0
         TEST(model, 0, 0);
@@ -65,7 +64,7 @@ int main()
     {
         // Simple case with only one node interacting with himself
         // The node have to turn off
-        dynamic::matrix_model<1> model({1.0, 0}, 1);
+        bn::dynamic::matrix_model<1> model({1.0, 0}, 1);
 
         // The node is initialized to 0 and could stay to 0
         TEST(model, 0, 0);
@@ -76,7 +75,7 @@ int main()
     {
         // Simple case with only one node interacting with himself
         // The node have to turn on
-        dynamic::matrix_model<1> model({-1.0, 0}, 1);
+        bn::dynamic::matrix_model<1> model({-1.0, 0}, 1);
 
         // The node is initialized to 0 and have to turn on
         TEST(model, 0, 1);
@@ -88,7 +87,7 @@ int main()
         // Simple case with only one node interacting with himself
         // The node have to stay to the same position
         // The node give an positive effect on himself only if he is activate
-        dynamic::matrix_model<1> model({0.0, 1}, 1);
+        bn::dynamic::matrix_model<1> model({0.0, 1}, 1);
 
         // The node is initialized to 0 and have to stay off
         TEST(model, 0, 0);
@@ -100,7 +99,7 @@ int main()
         // Simple case with only one node interacting with himself
         // The node have to turn off
         // Once the node is activated, he give to himself a negative effect.
-        dynamic::matrix_model<1> model({0.0, -1}, 1);
+        bn::dynamic::matrix_model<1> model({0.0, -1}, 1);
 
         // The node is initialized to 0 and have to stay off
         TEST(model, 0, 0);
@@ -111,7 +110,7 @@ int main()
     {
         // Same case than before but with 2 nodes
         // They doesn't have to change
-        dynamic::matrix_model<2> model({
+        bn::dynamic::matrix_model<2> model({
                 0.0, 0, 0,
                 0.0, 0, 0}, 2);
 
@@ -122,7 +121,7 @@ int main()
     {
         // Model with 2 nodes
         // Nodes have to became off
-        dynamic::matrix_model<2> model({
+        bn::dynamic::matrix_model<2> model({
                 1.0, 0, 0,
                 1.0, 0, 0}, 2);
 
@@ -133,10 +132,9 @@ int main()
     {
         // Model with 2 nodes
         // Nodes have to became on
-        dynamic::matrix_model<2> model({
+        bn::dynamic::matrix_model<2> model({
                 -1.0, 0, 0,
                 -1.0, 0, 0}, 2);
-        dynamic::state_machine<dynamic::matrix_model<2> > machine(model);
 
         // The nodes are initialized to 0, 1, 2 or 3 and have to turn on (3)
         for(std::size_t i = 0 ; i < 4 ; i++)
@@ -145,10 +143,9 @@ int main()
     {
         // Model with 2 nodes
         // Nodes have to stay to the same pos
-        dynamic::matrix_model<2> model({
+        bn::dynamic::matrix_model<2> model({
                 0.0, 1, 0,
                 0.0, 0, 1}, 2);
-        dynamic::state_machine<dynamic::matrix_model<2> > machine(model);
 
         // The nodes are initialized to 0, 1, 2 or 3 and have to stay to the same position
         for(std::size_t i = 0 ; i < 4 ; i++)
@@ -157,10 +154,9 @@ int main()
     {
         // Model with 2 nodes
         // Nodes have to stay to turn off
-        dynamic::matrix_model<2> model({
+        bn::dynamic::matrix_model<2> model({
                 0.0, -1,  0,
                 0.0,  0, -1}, 2);
-        dynamic::state_machine<dynamic::matrix_model<2> > machine(model);
 
         // The nodes are initialized to 0, 1, 2 or 3 and have to stay to turn off
         for(std::size_t i = 0 ; i < 4 ; i++)
@@ -171,7 +167,7 @@ int main()
         // Each node interact positively with the other
         // If one node is on, the second turn on. If no-one is on,
         // the system stay off
-        dynamic::matrix_model<2> model({
+        bn::dynamic::matrix_model<2> model({
                 0.0,  0,  1,
                 0.0,  1,  0}, 2);
 
@@ -186,7 +182,7 @@ int main()
         // Model with 2 nodes
         // Each node interact negatively with the other
         // Only one can stay on. If both are on, they turn then off
-        dynamic::matrix_model<2> model({
+        bn::dynamic::matrix_model<2> model({
                 0.0,  0, -1,
                 0.0, -1,  0}, 2);
 
@@ -202,10 +198,9 @@ int main()
         // If both are off, the system stay off.
         // If the first is on, the second is turned on and turn the first off.
         // So in all other case the first is off and the second on
-        dynamic::matrix_model<2> model({
+        bn::dynamic::matrix_model<2> model({
                 0.0,  0, -1,
                 0.0,  1,  0}, 2);
-        dynamic::state_machine<dynamic::matrix_model<2> > machine(model);
 
         TEST(model, 0, 0);
         TEST(model, 1, 2);
@@ -219,10 +214,9 @@ int main()
         // For an odd number of step, with 10 or 01, the system is the
         // opposite (01 and 10). Else it's the same position.
         // If the state is 11, the system is at equilibrium.
-        dynamic::matrix_model<2> model({
+        bn::dynamic::matrix_model<2> model({
                 0.0, -1,  1,
                 0.0,  1, -1}, 2);
-        dynamic::state_machine<dynamic::matrix_model<2> > machine(model);
 
         TEST(model, 0, 0);
         TEST_N(model, 1, 2, 2 * N + 1); // To be sure, the number of step is odd
@@ -233,12 +227,11 @@ int main()
     }
     {
         // Model with 4 nodes and a cycling model
-        dynamic::matrix_model<4> model({
+        bn::dynamic::matrix_model<4> model({
                 0.0, -1,  1,  0,  0,
                 0.0,  0, -1,  1,  0,
                 0.0,  0,  0, -1,  1,
                 0.0,  1,  0,  0, -1}, 4);
-        dynamic::state_machine<dynamic::matrix_model<4> > machine(model);
 
         TEST(model, 0, 0);
         TEST_N(model, 1, 1, 4 * N); // Number of step = 0 modulo 4

@@ -1,10 +1,10 @@
 # minimum version of CMake needed (used version).
 cmake_minimum_required(VERSION 2.8.9)
 
-# Our project name: CellBool
-project(CellBool)
+# Our project name: bool_network
+project(bool_network)
 
-set(CELLBOOL_SOURCE_DIR ".")
+set(BOOL_NETWORK_SOURCE_DIR ".")
 
 # Enable debug symbols by default
 if(CMAKE_BUILD_TYPE STREQUAL "")
@@ -21,14 +21,14 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG")
 endif()
 
-# CellBool include directory
+# bool_network include directory
 include_directories("include")
 
-# CellBool sources
-file(GLOB_RECURSE CELLBOOL_SOURCES ${CELLBOOL_SOURCE_DIR}/src/*.cpp)
-list(REMOVE_ITEM CELLBOOL_SOURCES ${CELLBOOL_SOURCE_DIR}/src/main.cpp)
-set(CELLBOOL_LIB "CELLBOOL_lib")
-add_library(${CELLBOOL_LIB} SHARED ${CELLBOOL_SOURCES})
+# bool_network sources
+file(GLOB_RECURSE BOOL_NETWORK_SOURCES ${BOOL_NETWORK_SOURCE_DIR}/src/*.cpp)
+list(REMOVE_ITEM BOOL_NETWORK_SOURCES ${BOOL_NETWORK_SOURCE_DIR}/src/main.cpp)
+set(BOOL_NETWORK_LIB "bool_network")
+add_library(${BOOL_NETWORK_LIB} SHARED ${BOOL_NETWORK_SOURCES})
 
 # CTags target
 set(CTAGS_TARGET_NAME "tags")
@@ -51,3 +51,6 @@ endif(DOXYGEN_FOUND)
 
 # Tests
 add_subdirectory("tests")
+
+# Examples
+add_subdirectory("examples")
